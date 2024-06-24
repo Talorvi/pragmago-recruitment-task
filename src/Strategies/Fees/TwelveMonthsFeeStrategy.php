@@ -5,30 +5,29 @@ declare(strict_types=1);
 namespace Talorvi\FeeCalculator\Strategies\Fees;
 
 use Talorvi\FeeCalculator\Contracts\FeeCalculationStrategy;
-use Talorvi\FeeCalculator\Contracts\FeeStructureRepository;
 use Talorvi\FeeCalculator\Contracts\InterpolationStrategy;
 use Talorvi\FeeCalculator\Contracts\RoundingStrategy;
 
 class TwelveMonthsFeeStrategy implements FeeCalculationStrategy
 {
-    private FeeStructureRepository $feeStructureRepository;
+    private array $feeStructure;
     private InterpolationStrategy $interpolationStrategy;
     private RoundingStrategy $roundingStrategy;
 
     public function __construct(
-        FeeStructureRepository $feeStructureRepository,
+        array $feeStructure,
         InterpolationStrategy  $interpolationStrategy,
         RoundingStrategy       $roundingStrategy
     )
     {
-        $this->feeStructureRepository = $feeStructureRepository;
+        $this->feeStructure = $feeStructure;
         $this->interpolationStrategy = $interpolationStrategy;
         $this->roundingStrategy = $roundingStrategy;
     }
 
     public function calculate(float $amount): float
     {
-        $feeStructure = $this->feeStructureRepository->getFeesForTerm(12);
+        $feeStructure = $this->feeStructure;
         $interpolatedFee = $this->interpolationStrategy->interpolate($amount, $feeStructure);
         return $this->roundingStrategy->round($interpolatedFee, $amount);
     }

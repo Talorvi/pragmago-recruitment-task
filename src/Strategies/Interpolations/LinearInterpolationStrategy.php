@@ -19,6 +19,11 @@ class LinearInterpolationStrategy implements InterpolationStrategy
         ksort($feeStructure);
         $keys = array_keys($feeStructure);
 
+        // Handle the case where the amount is less than the smallest key
+        if ($amount < $keys[0]) {
+            return $feeStructure[$keys[0]];
+        }
+
         // Iterate through the sorted keys to find the correct interval for interpolation
         for ($i = 0; $i < count($keys) - 1; $i++) {
             // Check if the given amount falls within the current interval.
@@ -30,6 +35,7 @@ class LinearInterpolationStrategy implements InterpolationStrategy
                 return $lowerFee + (($amount - $lowerBound) / ($upperBound - $lowerBound)) * ($upperFee - $lowerFee);
             }
         }
+
         // If the amount is greater than the highest key, return the highest fee
         return $feeStructure[$keys[count($keys) - 1]];
     }

@@ -34,7 +34,10 @@ class App
             exit(1);
         }
 
-        if ($term !== 12 && $term !== 24) {
+        // Convert term to integer
+        $term = intval($term);
+
+        if (!in_array($term, [12, 24])) {
             echo "Error: Term must be either 12 or 24 months.\n";
             exit(1);
         }

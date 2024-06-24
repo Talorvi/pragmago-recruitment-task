@@ -6,5 +6,5 @@ namespace Talorvi\FeeCalculator\Contracts;
 
 interface InterpolationStrategy
 {
-    function interpolate(float $amount, array $feeStructure): float;
+    public function interpolate(float $amount, array $feeStructure): float;
 }

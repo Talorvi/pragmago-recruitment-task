@@ -7,7 +7,7 @@ namespace Talorvi\FeeCalculator\Contracts;
 interface FeeCalculationStrategy
 {
     public function __construct(
-        FeeStructureRepository $feeStructureRepository,
+        array $feeStructure,
         InterpolationStrategy  $interpolationStrategy,
         RoundingStrategy       $roundingStrategy
     );

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Talorvi\FeeCalculator\Repositories\ArrayFeeStructureRepository;
+use Talorvi\FeeCalculator\Enums\LoanTerm;
 use Talorvi\FeeCalculator\Strategies\Fees\TwelveMonthsFeeStrategy;
 use Talorvi\FeeCalculator\Strategies\Interpolations\LinearInterpolationStrategy;
 use Talorvi\FeeCalculator\Strategies\Roundings\RoundUpToFiveStrategy;
@@ -18,7 +19,7 @@ class TwelveMonthsFeeStrategyTest extends TestCase
         $interpolationStrategy = new LinearInterpolationStrategy();
         $roundingStrategy = new RoundUpToFiveStrategy();
 
-        $this->strategy = new TwelveMonthsFeeStrategy($feeStructureRepository, $interpolationStrategy, $roundingStrategy);
+        $this->strategy = new TwelveMonthsFeeStrategy($feeStructureRepository->getFeesForTerm(LoanTerm::TwelveMonths->value), $interpolationStrategy, $roundingStrategy);
     }
 
     public function testCalculateFee()

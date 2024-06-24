@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Talorvi\FeeCalculator\Repositories\ArrayFeeStructureRepository;
+use Talorvi\FeeCalculator\Enums\LoanTerm;
 use Talorvi\FeeCalculator\Strategies\Interpolations\LinearInterpolationStrategy;
 
 class LinearInterpolationStrategyTest extends TestCase
@@ -16,7 +17,7 @@ class LinearInterpolationStrategyTest extends TestCase
         $this->strategy = new LinearInterpolationStrategy();
 
         $feeStructureRepository = new ArrayFeeStructureRepository();
-        $this->feeStructure = $feeStructureRepository->getFeesForTerm(12);
+        $this->feeStructure = $feeStructureRepository->getFeesForTerm(LoanTerm::TwelveMonths->value);
     }
 
     public function testInterpolate()
@@ -35,7 +36,7 @@ class LinearInterpolationStrategyTest extends TestCase
         // | 5000 PLN    | 100 PLN|
         // | 6000 PLN    | 120 PLN|
         $interpolatedValue = $this->strategy->interpolate(4500, $this->feeStructure);
-        $this->assertEquals(110, $interpolatedValue);
+        $this->assertEquals(107.5, $interpolatedValue);
 
         $interpolatedValue = $this->strategy->interpolate(20000, $this->feeStructure);
         $this->assertEquals(400, $interpolatedValue);
