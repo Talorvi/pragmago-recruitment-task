@@ -10,7 +10,8 @@ use Talorvi\FeeCalculator\Enums\LoanTerm;
 use Talorvi\FeeCalculator\Repositories\ArrayFeeStructureRepository;
 use Talorvi\FeeCalculator\Services\FeeCalculatorService;
 use Talorvi\FeeCalculator\Models\LoanProposal;
-use Talorvi\FeeCalculator\Factories\FeeStrategyFactory;
+use Talorvi\FeeCalculator\Strategies\Interpolations\LinearInterpolationStrategy;
+use Talorvi\FeeCalculator\Strategies\Roundings\RoundUpToFiveStrategy;
 
 class App
 {
@@ -44,10 +45,10 @@ class App
             exit(1);
         }
 
-        // Initialize the fee calculator components
         $feeStructureRepository = new ArrayFeeStructureRepository();
-        $factory = new FeeStrategyFactory($feeStructureRepository);
-        $calculator = new FeeCalculatorService($factory);
+        $interpolationStrategy = new LinearInterpolationStrategy();
+        $roundingStrategy = new RoundUpToFiveStrategy();
+        $calculator = new FeeCalculatorService($feeStructureRepository, $interpolationStrategy, $roundingStrategy);
         $application = new LoanProposal($term->value, $amount);
 
         try {

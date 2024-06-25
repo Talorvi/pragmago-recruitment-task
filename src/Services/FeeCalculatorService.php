@@ -5,17 +5,27 @@ declare(strict_types=1);
 namespace Talorvi\FeeCalculator\Services;
 
 use InvalidArgumentException;
+use Talorvi\FeeCalculator\Contracts\InterpolationStrategy;
+use Talorvi\FeeCalculator\Contracts\RoundingStrategy;
 use Talorvi\FeeCalculator\Enums\LoanTerm;
-use Talorvi\FeeCalculator\Factories\FeeStrategyFactory;
 use Talorvi\FeeCalculator\Models\LoanProposal;
+use Talorvi\FeeCalculator\Repositories\ArrayFeeStructureRepository;
 
 class FeeCalculatorService
 {
-    private FeeStrategyFactory $factory;
+    private ArrayFeeStructureRepository $arrayFeeStructureRepository;
+    private InterpolationStrategy $interpolationStrategy;
+    private RoundingStrategy $roundingStrategy;
 
-    public function __construct(FeeStrategyFactory $factory)
-    {
-        $this->factory = $factory;
+    public function __construct(
+        ArrayFeeStructureRepository $arrayFeeStructureRepository,
+        InterpolationStrategy $interpolationStrategy,
+        RoundingStrategy $roundingStrategy
+    ) {
+        $this->roundingStrategy = $roundingStrategy;
+        $this->interpolationStrategy = $interpolationStrategy;
+        $this->arrayFeeStructureRepository = $arrayFeeStructureRepository;
+
     }
 
     public function calculate(LoanProposal $application): float
@@ -26,7 +36,9 @@ class FeeCalculatorService
             throw new InvalidArgumentException();
         }
 
-        $strategy = $this->factory->getStrategy($term);
-        return $strategy->calculate($application->amount());
+        $term = LoanTerm::tryFrom($application->term());
+        $feeStructure = $this->arrayFeeStructureRepository->getFeesForTerm($term);
+        $interpolatedFee = $this->interpolationStrategy->interpolate($application->amount(), $feeStructure);
+        return $this->roundingStrategy->round($interpolatedFee, $application->amount());
     }
 }

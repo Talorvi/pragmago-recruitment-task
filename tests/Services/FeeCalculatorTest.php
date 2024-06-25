@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use Talorvi\FeeCalculator\Factories\FeeStrategyFactory;
 use Talorvi\FeeCalculator\Models\LoanProposal;
 use Talorvi\FeeCalculator\Repositories\ArrayFeeStructureRepository;
 use Talorvi\FeeCalculator\Services\FeeCalculatorService;
@@ -13,8 +12,8 @@ use Talorvi\FeeCalculator\Enums\LoanTerm;
 
 class FeeCalculatorTest extends TestCase
 {
-    private FeeCalculatorService $calculator;
     private ArrayFeeStructureRepository $repository;
+    private FeeCalculatorService $calculator;
 
     public function testCalculateFeeFor12MonthsTerm()
     {
@@ -136,7 +135,8 @@ class FeeCalculatorTest extends TestCase
     protected function setUp(): void
     {
         $this->repository = new ArrayFeeStructureRepository();
-        $factory = new FeeStrategyFactory($this->repository);
-        $this->calculator = new FeeCalculatorService($factory);
+        $interpolationStrategy = new LinearInterpolationStrategy();
+        $roundingStrategy = new RoundUpToFiveStrategy();
+        $this->calculator = new FeeCalculatorService($this->repository, $interpolationStrategy, $roundingStrategy);
     }
 }
