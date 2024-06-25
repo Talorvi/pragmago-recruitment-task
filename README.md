@@ -18,6 +18,9 @@ This project is designed to calculate fees for loans based on the amount and ter
 
 - **App.php**: The main application entry point.
 - **src/**: Contains the main source code.
+    - **Contracts/**: Interfaces defining the contracts for various strategies and repositories.
+    - **Enums/**: Contains the enumeration types used throughout the application to provide a set of predefined constants.
+    - **Factories/**: Factory classes for creating strategy instances.
     - **Models/**: Data models used in the application.
     - **Repositories/**: Implementations of the fee structure repository.
     - **Services/**: Service classes performing core business logic.
