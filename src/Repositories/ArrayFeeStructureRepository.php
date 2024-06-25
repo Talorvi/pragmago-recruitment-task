@@ -10,7 +10,7 @@ use Talorvi\FeeCalculator\Enums\LoanTerm;
 class ArrayFeeStructureRepository implements FeeStructureRepository
 {
     private array $feeStructure = [
-        12 => [
+        LoanTerm::TwelveMonths->value => [
             1000 => 50,
             2000 => 90,
             3000 => 90,
@@ -32,7 +32,7 @@ class ArrayFeeStructureRepository implements FeeStructureRepository
             19000 => 380,
             20000 => 400,
         ],
-        24 => [
+        LoanTerm::TwentyFourMonths->value => [
             1000 => 70,
             2000 => 100,
             3000 => 120,
