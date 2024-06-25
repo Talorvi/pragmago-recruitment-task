@@ -1,4 +1,4 @@
-# PragmaGO.TECH Interview Test - Fee Calculation
+# PragmaGO.TECH Interview Test - Fee Calculation - Alternative Solution
 
 ## Overview
 
@@ -18,12 +18,10 @@ This project is designed to calculate fees for loans based on the amount and ter
 
 - **App.php**: The main application entry point.
 - **src/**: Contains the main source code.
-    - **Contracts/**: Interfaces defining the contracts for various strategies and repositories.
-    - **Factories/**: Factory classes for creating strategy instances.
     - **Models/**: Data models used in the application.
     - **Repositories/**: Implementations of the fee structure repository.
     - **Services/**: Service classes performing core business logic.
-    - **Strategies/**: Different strategy implementations for fee calculation, interpolation, and rounding.
+    - **Strategies/**: Different strategy implementations for interpolation and rounding.
 - **tests/**: Unit tests for various components of the application.
 
 ## Installation
