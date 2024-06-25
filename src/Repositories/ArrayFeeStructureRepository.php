@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Talorvi\FeeCalculator\Repositories;
 
 use Talorvi\FeeCalculator\Contracts\FeeStructureRepository;
+use Talorvi\FeeCalculator\Enums\LoanTerm;
 
 class ArrayFeeStructureRepository implements FeeStructureRepository
 {
@@ -55,8 +56,8 @@ class ArrayFeeStructureRepository implements FeeStructureRepository
         ],
     ];
 
-    public function getFeesForTerm(int $term): array
+    public function getFeesForTerm(LoanTerm $term): array
     {
-        return $this->feeStructure[$term] ?? [];
+        return $this->feeStructure[$term->value] ?? [];
     }
 }

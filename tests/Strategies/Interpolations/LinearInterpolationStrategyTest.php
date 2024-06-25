@@ -17,7 +17,7 @@ class LinearInterpolationStrategyTest extends TestCase
         $this->strategy = new LinearInterpolationStrategy();
 
         $feeStructureRepository = new ArrayFeeStructureRepository();
-        $this->feeStructure = $feeStructureRepository->getFeesForTerm(LoanTerm::TwelveMonths->value);
+        $this->feeStructure = $feeStructureRepository->getFeesForTerm(LoanTerm::TwelveMonths);
     }
 
     public function testInterpolate()

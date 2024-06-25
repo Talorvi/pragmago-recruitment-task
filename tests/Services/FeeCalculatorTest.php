@@ -77,7 +77,7 @@ class FeeCalculatorTest extends TestCase
     public function testCalculateFeeWithRounding12Months()
     {
         $loanProposal = new LoanProposal(LoanTerm::TwelveMonths->value, 10150);
-        $feeStructure = $this->repository->getFeesForTerm(LoanTerm::TwelveMonths->value);
+        $feeStructure = $this->repository->getFeesForTerm(LoanTerm::TwelveMonths);
 
         // Calculate the interpolated fee
         $interpolatedFee = (new LinearInterpolationStrategy())->interpolate(10150, $feeStructure);
@@ -92,7 +92,7 @@ class FeeCalculatorTest extends TestCase
     public function testCalculateFeeWithRounding24Months()
     {
         $loanProposal = new LoanProposal(LoanTerm::TwentyFourMonths->value, 10150);
-        $feeStructure = $this->repository->getFeesForTerm(LoanTerm::TwentyFourMonths->value);
+        $feeStructure = $this->repository->getFeesForTerm(LoanTerm::TwentyFourMonths);
 
         // Calculate the interpolated fee
         $interpolatedFee = (new LinearInterpolationStrategy())->interpolate(10150, $feeStructure);

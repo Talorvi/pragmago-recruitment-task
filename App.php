@@ -6,6 +6,7 @@ namespace Talorvi\FeeCalculator;
 
 require __DIR__ . '/vendor/autoload.php';
 
+use Talorvi\FeeCalculator\Enums\LoanTerm;
 use Talorvi\FeeCalculator\Repositories\ArrayFeeStructureRepository;
 use Talorvi\FeeCalculator\Services\FeeCalculatorService;
 use Talorvi\FeeCalculator\Models\LoanProposal;
@@ -34,10 +35,11 @@ class App
             exit(1);
         }
 
-        // Convert term to integer
-        $term = intval($term);
+        // Try to get a valid LoanTerm enum case from the provided term
+        $term = LoanTerm::tryFrom($term);
 
-        if (!in_array($term, [12, 24])) {
+        // If no valid enum case is found, it means the term is invalid
+        if ($term === null) {
             echo "Error: Term must be either 12 or 24 months.\n";
             exit(1);
         }
@@ -46,7 +48,7 @@ class App
         $feeStructureRepository = new ArrayFeeStructureRepository();
         $factory = new FeeStrategyFactory($feeStructureRepository);
         $calculator = new FeeCalculatorService($factory);
-        $application = new LoanProposal($term, $amount);
+        $application = new LoanProposal($term->value, $amount);
 
         try {
             // Calculate the fee

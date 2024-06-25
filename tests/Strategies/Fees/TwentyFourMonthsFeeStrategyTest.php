@@ -19,7 +19,7 @@ class TwentyFourMonthsFeeStrategyTest extends TestCase
         $interpolationStrategy = new LinearInterpolationStrategy();
         $roundingStrategy = new RoundUpToFiveStrategy();
 
-        $this->strategy = new TwentyFourMonthsFeeStrategy($feeStructureRepository->getFeesForTerm(LoanTerm::TwentyFourMonths->value), $interpolationStrategy, $roundingStrategy);
+        $this->strategy = new TwentyFourMonthsFeeStrategy($feeStructureRepository->getFeesForTerm(LoanTerm::TwentyFourMonths), $interpolationStrategy, $roundingStrategy);
     }
 
     public function testCalculateFee()

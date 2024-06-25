@@ -21,25 +21,19 @@ class FeeStrategyFactory
         $this->feeStructureRepository = $feeStructureRepository;
     }
 
-    public function getStrategy(int $term): FeeCalculationStrategy
+    public function getStrategy(LoanTerm $term): FeeCalculationStrategy
     {
-        $loanTerm = LoanTerm::tryFrom($term);
-
-        if (null === $loanTerm) {
-            throw new \InvalidArgumentException("Unsupported loan term: $term");
-        }
-
         $interpolationStrategy = new LinearInterpolationStrategy();
         $roundingStrategy = new RoundUpToFiveStrategy();
 
-        return match ($loanTerm) {
+        return match ($term) {
             LoanTerm::TwelveMonths => new TwelveMonthsFeeStrategy(
-                $this->feeStructureRepository->getFeesForTerm(LoanTerm::TwelveMonths->value),
+                $this->feeStructureRepository->getFeesForTerm(LoanTerm::TwelveMonths),
                 $interpolationStrategy,
                 $roundingStrategy
             ),
             LoanTerm::TwentyFourMonths => new TwentyFourMonthsFeeStrategy(
-                $this->feeStructureRepository->getFeesForTerm(LoanTerm::TwentyFourMonths->value),
+                $this->feeStructureRepository->getFeesForTerm(LoanTerm::TwentyFourMonths),
                 $interpolationStrategy,
                 $roundingStrategy
             ),

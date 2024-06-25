@@ -15,7 +15,7 @@ class FeeStrategyFactoryTest extends TestCase
     {
         $feeStructureRepository = new ArrayFeeStructureRepository();
         $factory = new FeeStrategyFactory($feeStructureRepository);
-        $strategy = $factory->getStrategy(LoanTerm::TwelveMonths->value);
+        $strategy = $factory->getStrategy(LoanTerm::TwelveMonths);
         $this->assertInstanceOf(TwelveMonthsFeeStrategy::class, $strategy);
     }
 
@@ -23,15 +23,7 @@ class FeeStrategyFactoryTest extends TestCase
     {
         $feeStructureRepository = new ArrayFeeStructureRepository();
         $factory = new FeeStrategyFactory($feeStructureRepository);
-        $strategy = $factory->getStrategy(LoanTerm::TwentyFourMonths->value);
+        $strategy = $factory->getStrategy(LoanTerm::TwentyFourMonths);
         $this->assertInstanceOf(TwentyFourMonthsFeeStrategy::class, $strategy);
-    }
-
-    public function testCreateInvalidStrategy()
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $feeStructureRepository = new ArrayFeeStructureRepository();
-        $factory = new FeeStrategyFactory($feeStructureRepository);
-        $factory->getStrategy(36); // This assumes 36 is not a valid term and not defined in LoanTerm enum
     }
 }
