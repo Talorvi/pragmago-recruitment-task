@@ -7,11 +7,11 @@ namespace Talorvi\FeeCalculator;
 require __DIR__ . '/vendor/autoload.php';
 
 use Talorvi\FeeCalculator\Enums\LoanTerm;
+use Talorvi\FeeCalculator\Factories\Interpolations\InterpolationStrategyFactory;
+use Talorvi\FeeCalculator\Factories\Roundings\RoundingStrategyFactory;
 use Talorvi\FeeCalculator\Repositories\ArrayFeeStructureRepository;
 use Talorvi\FeeCalculator\Services\FeeCalculatorService;
 use Talorvi\FeeCalculator\Models\LoanProposal;
-use Talorvi\FeeCalculator\Strategies\Interpolations\LinearInterpolationStrategy;
-use Talorvi\FeeCalculator\Strategies\Roundings\RoundUpToFiveStrategy;
 
 class App
 {
@@ -46,9 +46,9 @@ class App
         }
 
         $feeStructureRepository = new ArrayFeeStructureRepository();
-        $interpolationStrategy = new LinearInterpolationStrategy();
-        $roundingStrategy = new RoundUpToFiveStrategy();
-        $calculator = new FeeCalculatorService($feeStructureRepository, $interpolationStrategy, $roundingStrategy);
+        $interpolationFactory = new InterpolationStrategyFactory();
+        $roundingFactory = new RoundingStrategyFactory();
+        $calculator = new FeeCalculatorService($feeStructureRepository, $interpolationFactory, $roundingFactory);
         $application = new LoanProposal($term->value, $amount);
 
         try {

@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use Talorvi\FeeCalculator\Factories\Interpolations\InterpolationStrategyFactory;
+use Talorvi\FeeCalculator\Factories\Roundings\RoundingStrategyFactory;
 use Talorvi\FeeCalculator\Models\LoanProposal;
 use Talorvi\FeeCalculator\Repositories\ArrayFeeStructureRepository;
 use Talorvi\FeeCalculator\Services\FeeCalculatorService;
@@ -135,8 +137,8 @@ class FeeCalculatorTest extends TestCase
     protected function setUp(): void
     {
         $this->repository = new ArrayFeeStructureRepository();
-        $interpolationStrategy = new LinearInterpolationStrategy();
-        $roundingStrategy = new RoundUpToFiveStrategy();
-        $this->calculator = new FeeCalculatorService($this->repository, $interpolationStrategy, $roundingStrategy);
+        $interpolationFactory = new InterpolationStrategyFactory();
+        $roundingFactory = new RoundingStrategyFactory();
+        $this->calculator = new FeeCalculatorService($this->repository, $interpolationFactory, $roundingFactory);
     }
 }
